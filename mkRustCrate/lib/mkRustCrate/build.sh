@@ -28,7 +28,49 @@ function add_deps {
     local dep_type=$1; shift
     local dep_dir=$1; shift
     local dep_flags=$1; shift
+
+    local DEPARR
+    declare -A DEPARR
+    local is_renamed=
+
+    # We need a mechanism for "renaming" crate imports
+    # See "Renaming dependencies in Cargo.toml"("Specifying Dependencies")
+    # in the Cargo Book
+    # It is very simplistic for now: just put a string before the reference
+    # to the dependency
+    # Save up these renamings in an array(DEPARR) in a pass before handling
+    # the dependencies.
+    #
     for dep in ${!dep_type}
+    do
+	    # FIXME: Crude hack for now: if this a directory, then assume this is
+	    # a dependency package
+	    if [[ -d $dep ]]
+	    then
+		    echo "'$dep' is dependency" >&2
+		    if [[ "$is_renamed" ]]
+		    then
+			    DEPARR[$dep]="$is_renamed"
+			    is_renamed=
+		    else
+			    DEPARR[$dep]=
+		    fi
+	    else
+		    echo "'$dep' is renaming" >&2
+		    if [[ "$is_renamed" ]]
+		    then
+			    echo "Redundant renaming ignored: '$is_renamed'" >&2
+		    fi
+		    is_renamed="$dep"
+	    fi
+    done
+    if [[ "$is_renamed" ]]
+    then
+	    echo "Extraneous renaming ignored: '$is_renamed'" >&2
+	    is_renamed=
+    fi
+
+    for dep in ${!DEPARR[@]}
     do
         stat $dep/lib/deps/* &>/dev/null \
             && cp -dn $dep/lib/deps/* deps \
@@ -39,11 +81,14 @@ function add_deps {
         done
         for lib in $dep/lib/*.{rlib,so}
         do
-	    local ext=$(filext $lib)
+	    local filename=$(basename $lib)
+	    local ext=${filename#*.}
+	    local libname=${filename/#lib/}
+	    libname=${libname%.*}
             printf -v$dep_flags "%s --extern %s=%s" \
                 "${!dep_flags}" \
-                "$(crate_name $dep)" \
-                "$dep/lib/lib$(crate_name $dep).$ext"
+                "${DEPARR[$dep]:-$libname}" \
+                "$dep/lib/lib${libname}.$ext"
             local dest=$(basename $lib .$ext)-$(crate_hash $dep).$ext
             copy_or_link "$lib" "$dep_dir/$dest"
         done
