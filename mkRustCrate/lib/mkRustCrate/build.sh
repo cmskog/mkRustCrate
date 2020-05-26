@@ -47,7 +47,6 @@ function add_deps {
 	    # a dependency package
 	    if [[ -d $dep ]]
 	    then
-		    echo "'$dep' is dependency" >&2
 		    if [[ "$is_renamed" ]]
 		    then
 			    DEPARR[$dep]="$is_renamed"
@@ -56,7 +55,6 @@ function add_deps {
 			    DEPARR[$dep]=
 		    fi
 	    else
-		    echo "'$dep' is renaming" >&2
 		    if [[ "$is_renamed" ]]
 		    then
 			    echo "Redundant renaming ignored: '$is_renamed'" >&2
