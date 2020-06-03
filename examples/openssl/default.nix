@@ -1,16 +1,9 @@
+{ pkgs ? import <nixpkgs> {} }:
 let
-  pkgs = import <nixpkgs> { };
-in
-  pkgs.callPackage ({ callPackage, pkgs, rustChannelOf }:
-let
-  rustChannel = rustChannelOf {
-    date = "2020-03-31";
-    channel = "nightly";
+  mkRustCrate = pkgs.callPackage ../../mkRustCrate/lib/mkRustCrate {
+    inherit (pkgs) cargo rustc;
   };
-  mkRustCrate = callPackage ../../mkRustCrate/lib/mkRustCrate {
-    inherit (rustChannel) cargo rust;
-  };
-  fetchFromCratesIo = callPackage ../../mkRustCrate/lib/fetchFromCratesIo { };
+  fetchFromCratesIo = pkgs.callPackage ../../mkRustCrate/lib/fetchFromCratesIo { };
 in
 rec {
   openssl-sys = mkRustCrate rec {
@@ -136,4 +129,4 @@ rec {
       sha256 = "1hhgqh551gmws22z9rxbnsvlppwxvlj0nszj7n1x56pqa3j3swy7";
     };
   };
-}) {}
+}

@@ -1,14 +1,9 @@
 { pkgs ? import <nixpkgs> {} }:
-  pkgs.callPackage ({ callPackage, rustChannelOf }:
     let
-      rustChannel = rustChannelOf {
-        date = "2020-04-22";
-        channel = "nightly";
+      mkRustCrate = pkgs.callPackage ../../mkRustCrate/lib/mkRustCrate {
+        inherit (pkgs) cargo rustc;
       };
-      mkRustCrate = callPackage ../../mkRustCrate/lib/mkRustCrate {
-        inherit (rustChannel) cargo rust;
-      };
-      fetchFromCratesIo = callPackage ../../mkRustCrate/lib/fetchFromCratesIo { };
+      fetchFromCratesIo = pkgs.callPackage ../../mkRustCrate/lib/fetchFromCratesIo { };
     in
     rec {
 # "rusttype 0.7.9 (registry+https://github.com/rust-lang/crates.io-index)": dependency applicable in the following cfgs: ""
@@ -188,4 +183,4 @@ autocfg-1-0-0--registry-https---github-com-rust-lang-crates-io-index- = mkRustCr
 
     ];
   };
-    }) {}
+    }

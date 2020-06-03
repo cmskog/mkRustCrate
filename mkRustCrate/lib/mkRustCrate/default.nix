@@ -1,4 +1,4 @@
-{ lib, substituteAll, runCommand, stdenv, cargo, rust, bash, jq, remarshal }:
+{ lib, substituteAll, runCommand, stdenv, cargo, rustc, bash, jq, remarshal }:
 { name
 , version
 , src
@@ -38,6 +38,6 @@ stdenv.mkDerivation ({
   features = builtins.concatStringsSep " " features;
   buildPhase = ". ${./build.sh}";
   installPhase = ". ${./install.sh}";
-  RUSTC = wrapper "${rust}/bin/rustc";
-  RUSTDOC = wrapper "${rust}/bin/rustdoc";
+  RUSTC = wrapper "${rustc}/bin/rustc";
+  RUSTDOC = wrapper "${rustc}/bin/rustdoc";
 } // args')

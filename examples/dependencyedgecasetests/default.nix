@@ -1,16 +1,9 @@
-let
-  pkgs = import <nixpkgs> { };
-in
-  pkgs.callPackage ({ callPackage, rustChannelOf }:
+{ pkgs ? import <nixpkgs> {} }:
     let
-      rustChannel = rustChannelOf {
-        date = "2020-03-31";
-        channel = "nightly";
+      mkRustCrate = pkgs.callPackage ../../mkRustCrate/lib/mkRustCrate {
+        inherit (pkgs) cargo rustc;
       };
-      mkRustCrate = callPackage ../../mkRustCrate/lib/mkRustCrate {
-        inherit (rustChannel) cargo rust;
-      };
-      fetchFromCratesIo = callPackage ../../mkRustCrate/lib/fetchFromCratesIo { };
+      fetchFromCratesIo = pkgs.callPackage ../../mkRustCrate/lib/fetchFromCratesIo { };
     in
     rec {
 
@@ -66,4 +59,4 @@ in
         features = [ "clone-impls" "derive" "parsing" "printing" "proc-macro" "visit" ];
       };
 
-    }) {}
+    }
