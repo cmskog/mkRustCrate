@@ -9,6 +9,7 @@
 , doCheck ? false
 , buildInputs ? []
 , buildProfile ? "release"
+, noDefaultFeatures ? false
 , ...} @ args:
 let
   args' = builtins.removeAttrs args ["features"];

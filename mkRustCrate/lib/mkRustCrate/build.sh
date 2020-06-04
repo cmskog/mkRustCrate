@@ -24,6 +24,11 @@ then
     buildFlags+=(--release)
 fi
 
+if [[ $noDefaultFeatures == "1" ]]
+then
+    buildFlags+=(--no-default-features)
+fi
+
 function add_deps {
     local dep_type=$1; shift
     local dep_dir=$1; shift
