@@ -2,7 +2,7 @@ def all_dependencies:
   .["dependencies", "dev-dependencies", "build-dependencies"];
 
 def optional_dependencies:
-  [ all_dependencies | objects | map_values(select(.optional?==true)) ]
+  [ (.,(.target | .[]?)) | all_dependencies | objects | map_values(select(.optional?==true)) ]
   | add // {};
 
 def augment_features:
