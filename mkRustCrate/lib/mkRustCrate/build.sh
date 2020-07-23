@@ -48,9 +48,23 @@ function add_deps {
     #
     for dep in ${!dep_type}
     do
+	    # First check for null dependency
+	    #
+	    # If an null dependency was denoted, i.e. we were given '-' as
+	    # a dependency, then just clear potential is_renamed renaming
+	    # '-' is chosen because:
+	    # 1. It will not be changed in shell expansion from the Nix expression
+	    #    down to shell scripts.
+	    # 2. Hyphens seems to be invalid in Rust dependency renamings
+	    # 3. A single hyphen is not a valid nix package name
+	    if [[ "$dep" == '-' ]]
+	    then
+		is_renamed=
+
 	    # FIXME: Crude hack for now: if this a directory, then assume this is
-	    # a dependency package
-	    if [[ -d $dep ]]
+	    # a dependency package. Would be nice to really check that this is a
+	    # valid nix package.
+	    elif [[ -d $dep ]]
 	    then
 		    if [[ "$is_renamed" ]]
 		    then
@@ -59,6 +73,9 @@ function add_deps {
 		    else
 			    DEPARR[$dep]=
 		    fi
+
+	    # If $dep is not a null dependency nor a nix package,then it must be
+	    # a renaming
 	    else
 		    if [[ "$is_renamed" ]]
 		    then
