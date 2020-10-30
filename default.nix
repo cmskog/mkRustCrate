@@ -1,6 +1,6 @@
 (self: super:
 	{
 		mkRustCrate = super.callPackage ./mkRustCrate/lib/mkRustCrate {};
-		fetchFromCratesIo = super.callPackage ./mkRustCrate/lib/fetchFromCratesIo {};
+		fetchFromCratesIo = import ./mkRustCrate/lib/fetchFromCratesIo;
 	}
 )
