@@ -17,12 +17,23 @@ do
         rlib)
             mkdir -p $out/lib
             cp $f $out/lib
-            dest=$out/lib/$(basename $f .rlib).depinfo
-            printf 'NIX_RUST_LINK_FLAGS=%q\n' "$NIX_RUST_LINK_FLAGS" > $dest
+            local dest=$out/lib/$(basename $f .rlib).depinfo
+            touch "$dest"
+
             for depinfo in build/*/output
             do
                 parse_depinfo $depinfo >> $dest
             done
+
+            local -A depmap=()
+
+            dep_renaming dependencies depmap
+
+            for dep in ${!depmap[@]}
+            do
+                cat $dep/lib/*.depinfo >> $dest
+            done
+
             needs_deps=1
             ;;
         a) ;&
