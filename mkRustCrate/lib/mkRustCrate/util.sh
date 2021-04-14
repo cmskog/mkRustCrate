@@ -60,6 +60,10 @@ function parse_depinfo {
             rustc-link-search)
                 printf 'NIX_RUST_LINK_FLAGS+="${NIX_RUST_LINK_FLAGS:+ }"-L%q\n' "$val"
                 ;;
+            rustc-cdylib-link-arg)
+                echo "parse_depinfo: rustc-cdylib-link-arg not supported" >&2
+                exit
+                ;;
             *)
                 printf 'export DEP_%s_%s=%q\n' \
                        "$(upper $CARGO_LINKS)" \
