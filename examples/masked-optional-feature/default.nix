@@ -3,7 +3,7 @@
       mkRustCrate = pkgs.callPackage ../../mkRustCrate/lib/mkRustCrate {
         inherit (pkgs) cargo rustc;
       };
-      fetchFromCratesIo = pkgs.callPackage ../../mkRustCrate/lib/fetchFromCratesIo { };
+      fetchFromCratesIo = pkgs.callPackage ../../mkRustCrate/lib/fetchFromCratesIo;
     in
     rec {
 # Package with pkgid: "proc-macro2 1.0.17 (registry+https://github.com/rust-lang/crates.io-index)"
@@ -54,12 +54,15 @@ proc-macro2-1-0-17--registry-https---github-com-rust-lang-crates-io-index-
 "proc-macro"
     ];
   };
-# Package with pkgid: "serde 1.0.110 (path+file:///Dev/alacritty/serde)"
+# Package with pkgid: "serde 1.0.110 (registry+https://github.com/rust-lang/crates.io-index)"
 # Root package
 serde-1-0-110--path-file----Dev-alacritty-serde- = mkRustCrate rec {
     name = "serde";
     version = "1.0.110";
-    src = /Dev/alacritty/serde;
+    src = fetchFromCratesIo {
+      inherit name version;
+      sha256 = "025ijwgy8c8b9savnvynbbpwdm8i5pdrvri05k07q61khmm6anap";
+    };
     dependencies = [
 serde-derive-1-0-110--registry-https---github-com-rust-lang-crates-io-index-
     ];

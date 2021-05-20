@@ -3,7 +3,7 @@
       mkRustCrate = pkgs.callPackage ../../mkRustCrate/lib/mkRustCrate {
         inherit (pkgs) cargo rustc;
       };
-      fetchFromCratesIo = pkgs.callPackage ../../mkRustCrate/lib/fetchFromCratesIo { };
+      fetchFromCratesIo = pkgs.callPackage ../../mkRustCrate/lib/fetchFromCratesIo;
     in
     rec {
 # "rusttype 0.7.9 (registry+https://github.com/rust-lang/crates.io-index)": dependency applicable in the following cfgs: ""

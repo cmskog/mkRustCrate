@@ -3,7 +3,7 @@ let
   mkRustCrate = pkgs.callPackage ../../mkRustCrate/lib/mkRustCrate {
     inherit (pkgs) cargo rustc;
   };
-  fetchFromCratesIo = pkgs.callPackage ../../mkRustCrate/lib/fetchFromCratesIo { };
+  fetchFromCratesIo = pkgs.callPackage ../../mkRustCrate/lib/fetchFromCratesIo;
 in
 rec {
   openssl-sys = mkRustCrate rec {
