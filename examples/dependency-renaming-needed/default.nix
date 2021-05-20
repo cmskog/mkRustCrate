@@ -15,9 +15,7 @@ rusttype-0-7-9--registry-https---github-com-rust-lang-crates-io-index- = mkRustC
       sha256 = "1j3iwirvq0j7mv1xnc1bvyz4hwijhmkgd0b8q983jbyw9sj7wxzn";
     };
     dependencies = [
-[
-	"rusttype_next" rusttype-0-8-3--registry-https---github-com-rust-lang-crates-io-index-
-]
+"rusttype_next" rusttype-0-8-3--registry-https---github-com-rust-lang-crates-io-index-
     ];
     buildDependencies = [
 

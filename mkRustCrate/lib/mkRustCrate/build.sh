@@ -49,10 +49,10 @@ function add_deps {
         done
         for lib in $dep/lib/*.{rlib,so}
         do
-	    local filename=$(basename $lib)
-	    local ext=${filename#*.}
-	    local libname=${filename/#lib/}
-	    libname=${libname%.*}
+            local filename=$(basename $lib)
+            local ext=${filename#*.}
+            local libname=${filename/#lib/}
+            libname=${libname%.*}
             printf -v$dep_flags "%s --extern %s=%s" \
                 "${!dep_flags}" \
                 "${DEPARR[$dep]:-$libname}" \
